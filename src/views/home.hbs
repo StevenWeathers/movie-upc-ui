@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Search for movies by UPC code">
+    <meta name="author" content="Steven Weathers">
+
+    <title>Find Movies by UPC</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <style>body { padding: 2rem; }</style>
+  </head>
+
+  <body>
+
+    <div class="container">
+
+		<div class="jumbotron">
+			<form id="UPCSearchForm">
+				<h1>Search for a Movie by UPC code</h1>
+				<label for="upc" class="sr-only">UPC Code</label>
+				<input type="text" id="upc" class="form-control" placeholder="UPC Code" required autofocus>
+				<p>Ex: 024543155782</p>
+
+				<button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
+			</form>
+		</div>
+
+		<div id="results"></div>
+
+    </div> <!-- /container -->
+
+	<script>
+		(function() {
+			document.getElementById("UPCSearchForm")
+				.addEventListener("submit", function(event){
+					event.preventDefault();
+
+					var upc = document.getElementById("upc").value;
+					
+					var xhr = new XMLHttpRequest();
+					xhr.open('GET', encodeURI('/search/' + upc));
+					xhr.onload = function() {
+					    if (xhr.status === 200) {
+					        document.getElementById("results").innerHTML = xhr.responseText;
+					    } else {
+					    	document.getElementById("results").innerHTML = 'Request failed.  Returned status of ' + xhr.status;
+					    }
+					};
+					xhr.send();
+			});
+		})();
+	</script>
+  </body>
+</html>
